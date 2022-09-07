@@ -1,15 +1,19 @@
 import { useState } from "react"
 import { useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
-import { Card, CardBody, CardText, Col, Container, Row } from "reactstrap"
+import { Button, Card, CardBody, CardText, Col, Container, Input, Row } from "reactstrap"
 import Base from "../components/Base"
-import { loadPost } from "../services/post-service"
+import { createComment, loadPost } from "../services/post-service"
 import { toast } from 'react-toastify'
 import { BASE_URL } from "../services/helper"
+import { isLoggedIn } from "../auth"
 const PostPage = () => {
 
     const { postId } = useParams()
     const [post, setPost] = useState(null)
+    const [comment, setComment] = useState({
+        conent: ''
+    })
 
     useEffect(() => {
         // load post of postId 
@@ -27,6 +31,32 @@ const PostPage = () => {
     const printDate = (numbers) => {
 
         return new Date(numbers).toLocaleDateString()
+    }
+
+    const submitPost=()=>{
+
+        if(!isLoggedIn()){
+                toast.error("Need to login first !!")
+                return
+        }
+
+        if(comment.content.trim()===''){
+            return
+        }
+        createComment(comment,post.postId)
+        .then(data=>{
+            console.log(data)
+            toast.success("comment added ..")
+            setPost({
+                ...post,
+                comments:[...post.comments,data.data]
+            })
+            setComment({
+                content:''
+            })
+        }).catch(error=>{
+            console.log(error)
+        })
     }
 
     return (
@@ -80,6 +110,47 @@ const PostPage = () => {
                         </Card>
 
                     </Col>
+                </Row>
+
+                <Row className="my-4">
+
+                    <Col md={
+
+                        {
+                            size: 9,
+                            offset: 1
+                        }
+                    }>
+                        <h3>Comments ( {post ? post.comments.length : 0} )</h3>
+
+                        {
+                            post && post.comments.map((c, index) => (
+                                <Card className="mt-4 border-0" key={index}>
+                                    <CardBody>
+                                        <CardText>
+                                            {c.content}
+                                        </CardText>
+                                    </CardBody>
+                                </Card>
+                            ))
+                        }
+
+                        <Card className="mt-4 border-0" >
+                            <CardBody>
+
+                                <Input
+                                    type="textarea"
+                                    placeholder="Enter comment here"
+                                    value={comment.content}
+                                    onChange={(event) => setComment({content:event.target.value})}
+                                />
+
+                                <Button  onClick={submitPost} className="mt-2" color="primary">Submit</Button>
+                            </CardBody>
+                        </Card>
+
+                    </Col>
+
                 </Row>
 
             </Container>
