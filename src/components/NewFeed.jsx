@@ -30,7 +30,6 @@ function NewFeed() {
 
 
     const changePage = (pageNumber = 0, pageSize = 5) => {
-
         if (pageNumber > postContent.pageNumber && postContent.lastPage) {
             return
         }
@@ -38,8 +37,6 @@ function NewFeed() {
             return
         }
         loadAllPosts(pageNumber, pageSize).then(data => {
-
-
             setPostContent({
                 content: [...postContent.content, ...data.content],
                 totalPages: data.totalPages,
@@ -64,9 +61,6 @@ function NewFeed() {
     }
 
     return (
-
-
-
         <div className="container-fluid">
             <Row>
                 <Col md={
@@ -77,7 +71,6 @@ function NewFeed() {
                 }>
 
                     <h1>Blogs Count  ( {postContent?.totalElements} )</h1>
-
                     <InfiniteScroll
                         dataLength={postContent.content.length}
                         next={changePageInfinite}
@@ -85,27 +78,18 @@ function NewFeed() {
                         loader={<h4>Loading...</h4>}
                         endMessage={
                             <p style={{ textAlign: 'center' }}>
-                              <b>Yay! You have seen it all</b>
+                                <b>Yay! You have seen it all</b>
                             </p>
-                          }
-
-
+                        }
                     >
-
-
                         {
                             postContent.content.map((post, index) => (
                                 <Post post={post} key={index} />
                             ))
                         }
 
-
-
                     </InfiniteScroll>
-
-
                     {/* <Container className='mt-3'>
-
                         <Pagination size='lg'>
                             <PaginationItem onClick={() => changePage(postContent.pageNumber-1)} disabled={postContent.pageNumber == 0}>
                                 <PaginationLink previous>

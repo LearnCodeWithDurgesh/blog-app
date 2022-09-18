@@ -1,0 +1,22 @@
+1.Create Context
+
+context=createContext(null)
+    Provider- provides
+    Consumer- consumes
+
+2. wrap our components in Provider
+
+<context.Provider value={user}>
+    chilren
+</context.Provider>
+
+3. consume the value with the help of consumer
+<context.Consumer>
+        {
+            (value)=>(
+                <div>
+                    {value.name}
+                </div>
+            )
+        }
+<context.Consumber>
