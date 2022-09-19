@@ -6,6 +6,7 @@ import { Row, Col, Pagination, PaginationItem, PaginationLink, Container } from 
 import Post from './Post'
 import { toast } from 'react-toastify'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import { deletePostService } from '../services/post-service'
 function NewFeed() {
 
 
@@ -54,6 +55,27 @@ function NewFeed() {
         })
     }
 
+
+
+    function deletePost(post) {
+        //going to delete post
+        console.log(post)
+
+        deletePostService(post.postId).then(res => {
+            console.log(res)
+            toast.success("post is deleled..")
+
+            let newPostContents = postContent.content.filter(p => p.postId != post.postId)
+            setPostContent({ ...postContent, content: newPostContents })
+
+        })
+            .catch(error => {
+                console.log(error)
+                toast.error("error in deleting post")
+            })
+    }
+
+
     const changePageInfinite = () => {
         console.log("page chagned")
         setCurrentPage(currentPage + 1)
@@ -65,8 +87,8 @@ function NewFeed() {
             <Row>
                 <Col md={
                     {
-                        size: 10,
-                        offset: 1
+                        size: 12
+
                     }
                 }>
 
@@ -84,7 +106,7 @@ function NewFeed() {
                     >
                         {
                             postContent.content.map((post, index) => (
-                                <Post post={post} key={index} />
+                                <Post deletePost={deletePost} post={post} key={index} />
                             ))
                         }
 

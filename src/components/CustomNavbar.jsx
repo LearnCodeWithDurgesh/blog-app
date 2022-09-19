@@ -1,19 +1,19 @@
+import { useContext } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink as ReactLink, useNavigate } from "react-router-dom";
 import { Navbar, NavbarBrand, NavbarToggler, Collapse, Nav, NavItem, NavLink, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, NavbarText } from "reactstrap";
 import { doLogout, getCurrentUserDetail, isLoggedIn } from "../auth";
+import userContext from "../context/userContext";
 
 const CustomNavbar = () => {
-
+    const userContextData = useContext(userContext)
     let navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
-
     const [login, setLogin] = useState(false)
     const [user, setUser] = useState(undefined)
 
     useEffect(() => {
-
 
         setLogin(isLoggedIn())
         setUser(getCurrentUserDetail())
@@ -25,6 +25,11 @@ const CustomNavbar = () => {
         doLogout(() => {
             //logged out
             setLogin(false)
+            userContextData.setUser({
+                data: null,
+                login: false
+            })
+
             navigate("/")
         })
     }
@@ -114,10 +119,10 @@ const CustomNavbar = () => {
                                         </NavLink>
                                     </NavItem>
 
-                                   
+
 
                                     <NavItem>
-                                        <NavLink  tag={ReactLink} to="/user/dashboard" >
+                                        <NavLink tag={ReactLink} to="/user/dashboard" >
                                             {user.email}
                                         </NavLink>
                                     </NavItem>

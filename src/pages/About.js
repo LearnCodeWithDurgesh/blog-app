@@ -4,11 +4,14 @@ import Base from "../components/Base";
 const About = () => {
   return (
     <userContext.Consumer>
-      {(user) => (
+      {(object) => (
         <Base>
           <h1>this is about page</h1>
           <p>we are building blog website</p>
-          <h1>Welcome user: {user.name}</h1>
+          {console.log(object)}
+          <h1>
+            Welcome user: {object.user.login && object.user.data.user.name}
+          </h1>
         </Base>
       )}
     </userContext.Consumer>
