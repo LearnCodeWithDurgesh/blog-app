@@ -20,7 +20,7 @@ import UpdateBlog from "./pages/UpdateBlog";
 
 function App() {
   return (
-    <UserProvider>
+    <UserProvider>        
       <BrowserRouter>
         <ToastContainer position="bottom-center" />
         <Routes>
@@ -34,7 +34,7 @@ function App() {
 
           <Route path="/user" element={<Privateroute />}>
             <Route path="dashboard" element={<Userdashboard />} />
-            <Route path="profile-info" element={<ProfileInfo />} />
+            <Route path="profile-info/:userId" element={<ProfileInfo />} />
             <Route path="update-blog/:blogId" element={<UpdateBlog />} />
           </Route>
         </Routes>
